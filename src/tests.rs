@@ -1,4 +1,4 @@
-use io::Read;
+use std::io::Read;
 use std::{collections::BTreeMap, sync::Barrier};
 
 #[test]
@@ -156,7 +156,7 @@ fn test_udp() {
 
         let mut counter = 0;
         while let Ok((sz, _)) = listener.recv_from(&mut buf) {
-            locked.push_str(&std::str::from_utf8(&buf[..sz]).unwrap());
+            locked.push_str(std::str::from_utf8(&buf[..sz]).unwrap());
             println!("string is now(sz={sz}): {locked}");
 
             counter += 1;

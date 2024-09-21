@@ -1,13 +1,12 @@
 use std::collections::BTreeMap;
 use std::fmt::Display;
 use std::io::Write;
-use time;
 
-use errors::*;
-use facility::Facility;
-use get_hostname;
-use get_process_info;
-use Priority;
+use crate::errors::*;
+use crate::facility::Facility;
+use crate::get_hostname;
+use crate::get_process_info;
+use crate::Priority;
 
 #[allow(non_camel_case_types)]
 #[derive(Copy, Clone)]
@@ -281,10 +280,7 @@ mod test {
         let d = Formatter3164::default();
 
         // `Facility` doesn't implement `PartialEq`, so we use a `match` instead.
-        assert!(match d.facility {
-            Facility::LOG_USER => true,
-            _ => false,
-        });
+        assert!(matches!(d.facility, Facility::LOG_USER));
 
         assert!(match &d.hostname {
             Some(hostname) => !hostname.is_empty(),
@@ -301,10 +297,7 @@ mod test {
         let d = Formatter5424::default();
 
         // `Facility` doesn't implement `PartialEq`, so we use a `match` instead.
-        assert!(match d.facility {
-            Facility::LOG_USER => true,
-            _ => false,
-        });
+        assert!(matches!(d.facility, Facility::LOG_USER));
 
         assert!(match &d.hostname {
             Some(hostname) => !hostname.is_empty(),
