@@ -11,21 +11,10 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cargo
-          target/
-        key: ${{ runner.os }}-${{ hashFiles('Cargo.toml') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ hashFiles('Cargo.toml') }}
-          ${{ runner.os }}-
+    - uses: actions/checkout@v4
+    - uses: Swatinem/rust-cache@v2
     - name: Build
       run: cargo build --verbose
     - name: Run tests
@@ -35,26 +24,15 @@ jobs:
     name: Coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
-      - name: Install rust
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
         with:
-          toolchain: stable
-          profile: minimal
-          override: true
-      - name: Cache
-        uses: Swatinem/rust-cache@v1
-      - name: Install cargo-tarpaulin
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cargo-tarpaulin
+          tool: cargo-tarpaulin
       - name: Run cargo tarpaulin
-        uses: actions-rs/cargo@v1
-        with:
-          command: tarpaulin
-          args: --output-dir coverage --out xml --workspace --tests --example log --example rfc5424 --example write
+        run: |
+          cargo tarpaulin --output-dir coverage --out xml --workspace --tests \
+            --example log --example rfc5424 --example write
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:

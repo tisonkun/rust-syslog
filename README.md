@@ -12,18 +12,16 @@ syslog is available on [crates.io](https://crates.io/crates/syslog) and can be i
 
 ```toml
 [dependencies]
-syslog = "^6.0"
+syslog = "^7.0"
 ```
 
-## documentation
+## Documentation
 
 Reference documentation is available [here](https://docs.rs/syslog).
 
 ## Example
 
 ```rust
-extern crate syslog;
-
 use syslog::{Facility, Formatter3164};
 
 fn main() {
@@ -46,12 +44,8 @@ fn main() {
 The struct `syslog::Logger` implements `Log` from the `log` crate, so it can be used as backend for other logging systems:
 
 ```rust
-extern crate syslog;
-#[macro_use]
-extern crate log;
-
 use syslog::{Facility, Formatter3164, BasicLogger};
-use log::{SetLoggerError, LevelFilter};
+use log::{SetLoggerError, LevelFilter, info};
 
 fn main() {
     let formatter = Formatter3164 {
@@ -67,7 +61,6 @@ fn main() {
 
     info!("hello world");
 }
-
 ```
 
 There are 3 functions to create loggers:
